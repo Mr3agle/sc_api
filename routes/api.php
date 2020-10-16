@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\ProductsController;
+use App\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -30,6 +32,14 @@ Route::group(['namespace' => 'Api', 'as' => 'api.'], function () {
 
         Route::post('logout', 'LoginController@logout')->name('logout');
 
+        Route::post('register-product', 'ProductsController@registerProduct')->name('registerProduct');
+
+        Route::post('update-product/{id}', 'ProductsController@updateProduct')->name('updateProduct');
+
+        Route::delete('delete-product/{id}', 'ProductsController@deleteProduct')->name('deleteProduct');
     });
 
+    Route::get('products', 'ProductsController@getAllProducts')->name('getAllProducts');
+
+    Route::get('product/{id}', 'ProductsController@getOneProduct')->name('getOneProduct');
 });
