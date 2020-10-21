@@ -13,16 +13,6 @@ use Illuminate\Http\Response;
  */
 class LoginController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Login Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles authenticating users for the application and
-    | redirecting them to your home screen. The controller uses a trait
-    | to conveniently provide its functionality to your applications.
-    |
-    */
 
     use AuthenticatesUsers;
 
@@ -32,15 +22,25 @@ class LoginController extends Controller
      * @var string
      */
     protected $redirectTo = RouteServiceProvider::HOME;
+    // protected $username;
 
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Request $request)
     {
         $this->middleware('guest')->except('logout');
+        $this->username = $this->findUsername($request);
+    }
+
+    public function findUsername(Request $request)
+    {
+        $login  = $request->username;
+        $fieldType = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+        request()->merge([$fieldType => $login]);
+        return $fieldType;
     }
 
     protected function sendLoginResponse(Request $request)
@@ -102,11 +102,15 @@ class LoginController extends Controller
     {
         $this->validateLogin($request);
 
+        $this->username = $this->findUsername($request);
+
         // If the class is using the ThrottlesLogins trait, we can automatically throttle
         // the login attempts for this application. We'll key this by the username and
         // the IP address of the client making these requests into this application.
-        if (method_exists($this, 'hasTooManyLoginAttempts') &&
-            $this->hasTooManyLoginAttempts($request)) {
+        if (
+            method_exists($this, 'hasTooManyLoginAttempts') &&
+            $this->hasTooManyLoginAttempts($request)
+        ) {
             $this->fireLockoutEvent($request);
 
             return $this->sendLockoutResponse($request);
@@ -122,5 +126,10 @@ class LoginController extends Controller
         $this->incrementLoginAttempts($request);
 
         return $this->sendFailedLoginResponse($request);
+    }
+
+    public function username()
+    {
+        return $this->username;
     }
 }

@@ -57,7 +57,9 @@ class RegisterController extends Controller
     {
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
+            'lastname' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'username' => ['required', 'regex:/^[\w-]*$/', 'unique:users,username', 'max:20'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
     }
@@ -70,9 +72,17 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        if (!$data['role']) {
+            $data['role'] = 'user';
+        }
+
         return User::create([
             'name' => $data['name'],
+            'lastname' => $data['name'],
             'email' => $data['email'],
+            'username' => $data['username'],
+            'ip_address' => request()->ip(),
+            'role' => $data['role'],
             'password' => Hash::make($data['password']),
         ]);
     }
@@ -138,5 +148,19 @@ class RegisterController extends Controller
         return $request->wantsJson()
             ? new Response('', 201)
             : redirect($this->redirectPath());
+    }
+
+    public function getIp()
+    {
+        foreach (array('HTTP_CLIENT_IP', 'HTTP_X_FORWARDED_FOR', 'HTTP_X_FORWARDED', 'HTTP_X_CLUSTER_CLIENT_IP', 'HTTP_FORWARDED_FOR', 'HTTP_FORWARDED', 'REMOTE_ADDR') as $key) {
+            if (array_key_exists($key, $_SERVER) === true) {
+                foreach (explode(',', $_SERVER[$key]) as $ip) {
+                    $ip = trim($ip); // just to be safe
+                    if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) !== false) {
+                        return $ip;
+                    }
+                }
+            }
+        }
     }
 }

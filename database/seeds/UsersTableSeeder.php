@@ -15,7 +15,11 @@ class UsersTableSeeder extends Seeder
         $users = [
             [
                 'name'     => 'Admin',
+                'lastname'     => 'Alpha',
+                'username' => 'admin_01',
                 'email'    => 'admin@mail.com',
+                'role' => 'admin',
+                'ip_address' => '192.168.1.1',
                 'password' => bcrypt('adminroot'),
             ]
         ];
