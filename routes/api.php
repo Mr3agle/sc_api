@@ -1,8 +1,8 @@
 <?php
 
-use App\Http\Controllers\Api\ProductsController;
-use App\Product;
-use Illuminate\Http\Request;
+// use App\Http\Controllers\Api\ProductsController;
+// use App\Product;
+// use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -33,6 +33,15 @@ Route::group(['namespace' => 'Api', 'as' => 'api.'], function () {
         Route::get('user', 'AuthenticationController@user')->name('user');
 
         Route::post('logout', 'LoginController@logout')->name('logout');
+
+        // USERS ***********************************************************************************
+        Route::get('all-users', 'UsersController@getAllUsers')->name('getAllUsers');
+
+        Route::get('admin-users', 'UsersController@getAdminUsers')->name('getAdminUsers');
+
+        Route::get('customer-users', 'UsersController@getCustomerUsers')->name('getCustomerUsers');
+
+        Route::get('manager-users', 'UsersController@getManagerUsers')->name('getManagerUsers');
 
         // PRODUCTS ***********************************************************************************
         Route::post('register-product', 'ProductsController@registerProduct')->name('registerProduct');
