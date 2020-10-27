@@ -21,9 +21,9 @@ class ProductsController extends Controller
             'productName' => 'required',
             'productSlug' => 'required',
             'category_id' => 'required',
-            'subCategory_id' => 'required',
+            // 'subCategory_id' => 'required',
             'categoryName' => 'required',
-            'subCategoryName' => 'required'
+            // 'subCategoryName' => 'required'
         ]);
 
         return Product::create($productData->all());
@@ -47,5 +47,14 @@ class ProductsController extends Controller
         Product::destroy($id);
 
         return ['message' => 'product successfully deleted'];
+    }
+
+    public function getAllByCategory($id)
+    {
+        return Product::where('category_id', $id)->orderBy('created_at', 'desc')->get();
+    }
+    public function getAllBySubCategory($id)
+    {
+        return Product::where('subcategory_id', $id)->orderBy('created_at', 'desc')->get();
     }
 }

@@ -18,9 +18,9 @@ class CreateProductsTable extends Migration
             $table->string('productName');
             $table->string('productSlug')->unique();
             $table->integer('category_id');
-            $table->integer('subCategory_id');
+            $table->integer('subCategory_id')->nullable();
             $table->string('categoryName');
-            $table->string('subCategoryName');
+            $table->string('subCategoryName')->nullable();
             $table->timestamps();
         });
     }
