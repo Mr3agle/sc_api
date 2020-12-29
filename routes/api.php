@@ -9,11 +9,6 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 | API Routes
 |--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
 */
 
 Route::group(['namespace' => 'Api', 'as' => 'api.'], function () {
@@ -61,6 +56,10 @@ Route::group(['namespace' => 'Api', 'as' => 'api.'], function () {
         Route::post('update-subcategory/{id}', 'SubCategoriesController@updateSubCategory')->name('updateSubCategory');
 
         Route::delete('delete-subcategory/{id}', 'SubCategoriesController@deleteSubCategory')->name('deleteSubCategory');
+        //CART
+        Route::post('add-to-c-cart', 'CartController@addToClientCart')->name('addToClientCart');
+
+        Route::get('get-c-cart/{id}', 'CartController@getClientCart')->name('getClientCart');
     });
 
     /*CLIENT AREA */
@@ -87,4 +86,6 @@ Route::group(['namespace' => 'Api', 'as' => 'api.'], function () {
     Route::get('subcategory/{id}', 'SubCategoriesController@getOneSubCategory')->name('getOneSubCategory');
 
     Route::get('belongs-to-category/{id}', 'SubCategoriesController@belongsToCategory')->name('belongsToCategory');
+    //Cart
+    Route::post('add-to-g-cart', 'CartController@addToGuestCart')->name('addToGuestCart');
 });

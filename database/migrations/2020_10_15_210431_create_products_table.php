@@ -21,6 +21,10 @@ class CreateProductsTable extends Migration
             $table->integer('subCategory_id')->nullable();
             $table->string('categoryName');
             $table->string('subCategoryName')->nullable();
+            $table->string('isVariable')->default('simple');
+            $table->string('price')->nullable();
+            $table->string('SpecialPrice')->nullable();
+            $table->string('thumbnail')->nullable();
             $table->timestamps();
         });
     }
